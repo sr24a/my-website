@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع الكتب الإلكترونية</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+            text-align: center;
+        }
+        nav {
+            background-color: #343a40;
+            color: #fff;
+            padding: 10px 0;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: #ddd;
+        }
+        header {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 50px;
+            color: #e3e3e3;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        #search-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #search-input {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            margin-bottom: 20px;
+        }
+        #search-button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-left: none;
+            border-radius: 0 5px 5px 0;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #content {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        #filters-container {
+            width: 200px;
+            margin-right: 20px;
+            text-align: left;
+        }
+        #filters-container h3 {
+            color: #333;
+        }
+        #filters-container ul {
+            list-style: none;
+            padding: 0;
+        }
+        #filters-container ul li {
+            margin-bottom: 10px;
+        }
+        #filters-container ul li a {
+            color: #003208;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        #filters-container ul li a:hover {
+            color: #003208;
+        }
+        #books-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: calc(100% - 240px);
+        }
+        .book {
+            width: 300px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: left;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .book:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .book img {
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .book img:hover {
+            opacity: 0.8;
+        }
+        .book h2 {
+            color: #333;
+        }
+        .book p {
+            color: #666;
+        }
+        .book .categories {
+            margin-top: 10px;
+            color: #999;
+        }
+        .home-button {
+            background-color: #003208;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        .home-button:hover {
+            background-color: #003208;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>موقع الكتب الإلكترونية</h1>
+    </header>
+    <nav>
+        <ul>
+            
+            <li><a href="روايات.html">روايات</a></li>
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="الافلام.html">أفلام</a></li>
+        </ul>
+    </nav>
+    
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="ابحث عن روايتك...">
+        <button id="search-button">🔍</button>
+    </div>
+    
+    <div id="content">
+        <div id="filters-container">
+            <h3>التصنيفات</h3>
+            <ul>
+                <li><a href="#" onclick="filterBooks('خيال')">خيال</a></li>
+                <li><a href="#" onclick="filterBooks('اكشن')">اكشن</a></li>
+                <li><a href="#" onclick="filterBooks('عائلي')">عائلي</a></li>
+                <li><a href="#" onclick="filterBooks('جريمة')">جريمة</a></li>
+                <li><a href="#" onclick="filterBooks('كوميدي')">كوميدي</a></li>
+            </ul>
+        </div>
+        <div id="books-container"></div>
+    </div>
+    
+    <button class="home-button" onclick="goToHomePage()">الرجوع الى الصفحة الرئيسية</button>
+
+    <script>
+        const books = [
+            {
+                title: " هاري بوتر وحجر الفيلسوف 2001  ",
+                image: "harrypotter1.jpeg",
+                pdf: "هاري بوتر1.pdf",
+                description: "رواية تجمع بين الخيال والإثارة.",
+                categories: ["خيال"]
+            },
+            {
+                title: "هاري بوتر وحجرة الأسرار  2002" ,
+                image: "harry2.jpeg",
+                pdf: "هاري بوتر2.pdf",
+                description: "رواية تجمع بين الخيال والإثارة.",
+                categories: ["خيال"]
+            },
+            {
+                title: " هاري بوتر وسجين أزكابان 2004",
+                image: "h3.jpg",
+                pdf: "هاري بوتر3.pdf",
+                description: "رواية تجمع بين الخيال والإثارة.",
+                categories: ["خيال"]
+            },
+            {
+                title: "هاري بوتر وكأس النار 2005",
+                image: "h4.jpg",
+                pdf: "هاري بوتر4.pdf",
+                description: "رواية تجمع بين الخيال والإثارة.",
+                categories: ["خيال"]
+            },
+            {
+                title: " هاري بوتر وجماعة العنقاء 2007",
+                image: "h5.jpg",
+                pdf: "هاري بوتر5.pdf",
+                description: "رواية تجمع بين الخيال والإثارة.",
+                categories: ["خيال"]
+            },
+            {
+                title: " هاري بوتر ومقدسات الموت 2010",
+                image: "h6.jpg",
+                pdf: "هاري بوتر6.pdf",
+                description: "رواية تجمع بين الخيال والإثارة.",
+                categories: ["خيال"]
+            }
+        ];
+
+        function createBookElement(book) {
+            const bookDiv = document.createElement('div');
+            bookDiv.classList.add('book');
+
+            const image = document.createElement('img');
+            image.src = book.image;
+            image.alt = book.title;
+            image.onerror = function () {
+                image.src = 'default-image.jpg';
+            };
+            image.onclick = function () {
+                openBookPage(book);
+            };
+            bookDiv.appendChild(image);
+
+            const title = document.createElement('h2');
+            title.textContent = book.title;
+            bookDiv.appendChild(title);
+
+            if (book.description) {
+                const description = document.createElement('p');
+                description.textContent = book.description;
+                bookDiv.appendChild(description);
+            }
+
+            if (book.categories) {
+                const categories = document.createElement('p');
+                categories.classList.add('categories');
+                categories.textContent = "التصنيفات: " + book.categories.join(", ");
+                bookDiv.appendChild(categories);
+            }
+
+            return bookDiv;
+        }
+
+        function openBookPage(book) {
+            const bookPage = window.open('', '_blank');
+            bookPage.document.write(`
+                <html lang="ar">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>${book.title}</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            margin: 0;
+                            padding: 0;
+                            direction: rtl;
+                            text-align: center;
+                        }
+                        h1 {
+                            margin-top: 50px;
+                            color: #333;
+                            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+                        }
+                        iframe {
+                            width: 80%;
+                            height: 600px;
+                            border: none;
+                            outline: none;
+                            margin-top: 20px;
+                        }
+                        .back-button {
+                            background-color: #003208;
+                            color: #fff;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            margin-top: 20px;
+                            transition: background-color 0.3s;
+                        }
+                        .back-button:hover {
+                            background-color: #003208;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>${book.title}</h1>
+                    <iframe src="${book.pdf}" frameborder="0"></iframe>
+                    <br>
+                    <button class="back-button" onclick="window.close()">العودة</button>
+                </body>
+                </html>
+            `);
+        }
+
+        function displayBooks(filteredBooks) {
+            const booksContainer = document.getElementById('books-container');
+            booksContainer.innerHTML = '';
+            filteredBooks.forEach(book => {
+                const bookElement = createBookElement(book);
+                booksContainer.appendChild(bookElement);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            displayBooks(books);
+
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+            searchButton.addEventListener('click', function () {
+                const query = searchInput.value.toLowerCase();
+                const filteredBooks = books.filter(book => book.title.toLowerCase().includes(query));
+                displayBooks(filteredBooks);
+            });
+        });
+
+        function filterBooks(category) {
+            const filteredBooks = books.filter(book => book.categories.includes(category));
+            displayBooks(filteredBooks);
+        }
+
+        function goToHomePage() {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

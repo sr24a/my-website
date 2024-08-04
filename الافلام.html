@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ساعة الأفلام
+    </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+            text-align: center;
+        }
+        nav {
+            background-color: #343a40;
+            color: #fff;
+            padding: 10px 0;
+            
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: #ddd;
+        }
+        header {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 50px;
+            color: #e3e3e3;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        #search-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #search-input {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            margin-bottom: 20px;
+        }
+        #search-button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-left: none;
+            border-radius: 0 5px 5px 0;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        #content {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        #filters-container {
+            width: 200px;
+            margin-right: 20px;
+            text-align: left;
+        }
+        #filters-container h3 {
+            color: #333;
+        }
+        #filters-container ul {
+            list-style: none;
+            padding: 0;
+        }
+        #filters-container ul li {
+            margin-bottom: 10px;
+        }
+        #filters-container ul li a {
+            color: #003208;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        #filters-container ul li a:hover {
+            color: #003208;
+        }
+        #movies-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: calc(100% - 240px);
+        }
+        .movie {
+            width: 300px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: left;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .movie:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .movie img {
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .movie img:hover {
+            opacity: 0.8;
+        }
+        .movie h2 {
+            color: #333;
+        }
+        .movie p {
+            color: #666;
+        }
+        .movie .categories {
+            margin-top: 10px;
+            color: #999;
+        }
+        .home-button {
+            background-color: #003208;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        .home-button:hover {
+            background-color: #003208;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>موقع الافلام الإلكترونية</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="الافلام.html">أفلام</a></li>
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="sh.html">روايات</a></li>
+        </ul>
+    </nav>
+    
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="ابحث عن فيلم...">
+        <button id="search-button">🔍</button>
+    </div>
+    
+    <div id="content">
+        <div id="filters-container">
+            <h3>التصنيفات</h3>
+            <ul>
+                <li><a href="#" onclick="filterMovies('خيال')">خيال</a></li>
+                <li><a href="#" onclick="filterMovies('اكشن')">اكشن</a></li>
+                <li><a href="#" onclick="filterMovies('عائلي')">عائلي</a></li>
+                <li><a href="#" onclick="filterMovies('جريمة')">جريمة</a></li>
+                <li><a href="#" onclick="filterMovies('كوميدي')">كوميدي</a></li>
+            </ul>
+        </div>
+        <div id="movies-container"></div>
+    </div>
+    
+    <button class="home-button" onclick="goToHomePage()"> الرجوع الى الصفحة الرئيسية</button>
+
+    <script>
+        const movies = [
+        {
+                title: "THE Flash",
+                image: "https://etbilarabi.com/sites/default/files/styles/article_landing/public/2023-06/Snapinsta.app_330667711_1413906739374547_4570661026122195395_n_1024.jpg?itok=PKVgWvSL",
+                video: "theflash.mp4",
+                description: "",
+                categories: ["عائلي", "اكشن", "خيال"]
+            },
+            {
+                title: "Avatar",
+                image: "https://m.media-amazon.com/images/I/61BvhK4SN2L._AC_UF894,1000_QL80_.jpg",
+                video: "avatar2009.mp4",
+                description: "",
+                categories: ["عائلي", "اكشن", "خيال"]
+            },
+        {
+                title: "Bad Boys For Life",
+                image: "badboys3.jpg",
+                video: "Bad.BoysForLife.mp4",
+                description: "يعود (بيرنت) الذي أصبح مفتشًا للعمل مع زميله القديم (لوري) الذي يعاني من اكتئاب مرحلة منتصف العمر، بعد أن رصد مرتزق ألباني جائزة مالية لمن يأتي برأس الثنائي انتقامًا لأخيه الذي قتل على يديهما.",
+                categories: ["كوميدي", "اكشن", "جريمة"]
+            },
+        {
+                title: "Spider-Man 2004",
+                image: "https://th.bing.com/th?id=ODL.c6f57dba23af2fc95dd9c797e89b4797&w=135&h=201&c=10&rs=1&qlt=90&o=6&dpr=1.3&pid=13.1",
+                video: "Spider.Man.2.2004.mp4",
+                description: "بعد مرور عامين على مكافحة (بيتر باركر)، يشعر بعدم السعادة وتبدأ حياته في الانهيار، بعد أن وجد (ماري) الفتاة التي يحبها مغرمة بشخص آخر، كما تبدأ الصحف في القول بأنه مجرم، فيقرر ألا يواجه الجريمة مرة أخرى، لكن يظهر (دكتور أوتو أوكتافيوس) الذي يقوم بعمل شيء شرير وخطير، فيعود بيتر لمهامه من جديد.",
+                categories: ["خيال", "اكشن", "عائلي"]
+            },
+            {
+                title: "Spider-Man 2002",
+                image: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/gh4cZbhZxyTbgxQPxD0dOudNPTn.jpg",
+                video: "Spider.Man.2002.mp4",
+                description: "يتناول الفيلم قصة طالب في المرحلة الثانوية يُدعي بيتر باركر. يعضه عنكبوت مُعالج جينياً، فيكتسب قدرات خارقة نتيجة امتزاج كود العنكبوت الجيني بالكود الخاص به. يسيء استخدام هذة القوة في البداية متسبباً في موت عمه، ليتحول بعد ذلك إلى البطل الخارق الرجل العنكبوت. مُعجباً من صغره بجارته ماري جين واتسون.",
+                categories: ["خيال", "اكشن", "عائلي"]
+            },
+            {
+                title: "Spider-Man 2007",
+                image: "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/qFmwhVUoUSXjkKRmca5yGDEXBIj.jpg",
+                video: "Spider.Man.3.2007.mp4",
+                description: "يحصل (الرجل العنكبوت) على مفتاح المدينة نتيجة لجهوده في إنقاذ حياة ابنة العمدة، والمدينة ككل، ونتيجة لذلك يصيبه الغرور، وتتوتر العلاقة بينه وبين حبيبته (مارى جين)، ويواجه بعد ذلك مخلوقًا طفيليًا... اقرأ المزيد قادمًا من الفضاء الخارجى لديه القدرة على إضفاء روح عدوانية شريرة.",
+                categories: ["خيال", "اكشن", "عائلي"]
+            },
+            {
+                title: "The Amazing Spider-Man",
+                image: "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/BgcvtsVWLQfjHD6Dr3YYgeSLYk.jpg",
+                video: "The.Amazing.Spiderman.2012.mp4",
+                description: "يؤدي أندرو غارفيلد دور بيتر باركر، وهو طالب في المرحلة الثانوية يتعلم كيفية استخدام قواه الجديدة بينما يحاول كشف الستار عن أسرار عائلية ويحارب شريرًا قويًا ومألوفًا.",
+                categories: ["خيال", "اكشن", "عائلي"]
+            },
+            {
+                title: "The Amazing Spider-Man2",
+                image: "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/kV61FAIsRWZP6JhgWFOKug9RbBx.jpg",
+                video: "The.Amazing.Spider.Man.2.2014.mp4",
+                description: "تدور أحداث الجزء الثاني من الرجل العنكبوت المذهل ويتمحور الدور على ماكس مخترع منظومة الكهرباء في الشركة التي يعمل بها وفي يوم العمل أكتشف أن أحد الكابلات كانت مقطوعة وكان الموقع الذي يعمل عليه خطيراً ويوجد تحت مستوعب مليء بالماء وفيه أفاع مما جعله يسقط في المستوعب هو والكابل الكهربائي لتلتف عليه تلك الأفاعي.......",
+                categories: ["خيال", "اكشن", "عائلي"]
+            },
+            {
+                title: "Spider-Man FarFromHome",
+                image: "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/4q2NNj4S5dG2RLF9CpXsej7yXl.jpg",
+                video: "Spider-Man.Far.From.Home.2019.mp4",
+                description: "",
+                categories: ["خيال", "اكشن", "عائلي"]
+            },
+            {
+                title: "هاري بوتر وحجر الفيلسوف 2001",
+                image: "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg",
+                video: "HarryPotter2001.mp4",
+                description: "الفيلم الأول في سلسلة هاري بوتر.",
+                
+                categories: ["خيال", "اكشن", "عائلي"]
+            },
+            {
+                title: "هاري بوتر وسجين أزكابان 2004",
+                image: "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/aWxwnYoe8p2d2fcxOqtvAtJ72Rw.jpg",
+                video: "HarryPotter2004.mp4",
+                description: "الفيلم الثالث في سلسلة هاري بوتر.",
+                categories: ["خيال", "اكشن", "عائلي"]
+            },
+            {
+                title: "هاري بوتر وكأس النار 2005",
+                image: "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/fECBtHlr0RB3foNHDiCBXeg9Bv9.jpg",
+                video: "HarryPotter2005.mp4",
+                description: "الفيلم الرابع في سلسلة هاري بوتر.",
+                categories: ["خيال", "اكشن", "عائلي"]
+            },
+            {
+                title: "هاري بوتر وجماعة العنقاء 2007",
+                image: "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/5aOyriWkPec0zUDxmHFP9qMmBaj.jpg",
+                video: "HarryPotter2007.mp4",
+                description: "الفيلم الخامس في سلسلة هاري بوتر.",
+                categories: ["خيال", "اكشن", "عائلي"]
+            },
+            {
+                title: "هاري بوتر والأمير الهجين 2009",
+                image: "https://media.themoviedb.org/t/p/w300_and_h450_bestv2/z7uo9zmQdQwU5ZJHFpv2Upl30i1.jpg",
+                video: "HarryPotter2009.mp4",
+                description: "الفيلم السادس في سلسلة هاري بوتر.",
+                categories: ["خيال", "اكشن", "عائلي"]
+            },
+            {
+                title: "هاري بوتر ومقدسات الموت الجزء الثاني 2011",
+                image: "https://th.bing.com/th/id/R.55bcbefc8878f32dc23d25df4bb0badd?rik=aGAPWJPKJmjNWw&pid=ImgRaw&r=0",
+                video: "HarryPotterPart.2.2011.mp4",
+                description: "الفيلم السابع والأخير في سلسلة هاري بوتر.",
+                categories: ["خيال", "اكشن", "عائلي"]
+            }
+        ];
+
+        function createMovieElement(movie) {
+            const movieDiv = document.createElement('div');
+            movieDiv.classList.add('movie');
+
+            const image = document.createElement('img');
+            image.src = movie.image;
+            image.alt = movie.title;
+            image.onerror = function () {
+                image.src = 'default-image.jpg';
+            };
+            image.onclick = function () {
+                openMoviePage(movie);
+            };
+            movieDiv.appendChild(image);
+
+            const title = document.createElement('h2');
+            title.textContent = movie.title;
+            movieDiv.appendChild(title);
+
+            if (movie.description) {
+                const description = document.createElement('p');
+                description.textContent = movie.description;
+                movieDiv.appendChild(description);
+            }
+
+            if (movie.categories) {
+                const categories = document.createElement('p');
+                categories.classList.add('categories');
+                categories.textContent = "التصنيفات: " + movie.categories.join(", ");
+                movieDiv.appendChild(categories);
+            }
+
+            return movieDiv;
+        }
+
+        function openMoviePage(movie) {
+            const moviePage = window.open('', '_blank');
+            moviePage.document.write(`
+                <html lang="ar">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>${movie.title}</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f4f4f4;
+                            margin: 0;
+                            padding: 0;
+                            direction: rtl;
+                            text-align: center;
+                        }
+                        h1 {
+                            margin-top: 50px;
+                            color: #333;
+                            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+                        }
+                        video {
+                            width: 80%;
+                            height: auto;
+                            border: none;
+                            outline: none;
+                            margin-top: 20px;
+                        }
+                        .back-button {
+                            background-color: #007bff;
+                            color: #fff;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            margin-top: 20px;
+                            transition: background-color 0.3s;
+                        }
+                        .back-button:hover {
+                            background-color: #0056b3;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>${movie.title}</h1>
+                    <video controls>
+                        <source src="${movie.video}" type="video/mp4">
+                        المتصفح الخاص بك لا يدعم تشغيل الفيديو.
+                    </video>
+                    <br>
+                    <button class="back-button" onclick="window.close()">العودة</button>
+                </body>
+                </html>
+            `);
+        }
+
+        function displayMovies(filteredMovies) {
+            const moviesContainer = document.getElementById('movies-container');
+            moviesContainer.innerHTML = '';
+            filteredMovies.forEach(movie => {
+                const movieElement = createMovieElement(movie);
+                moviesContainer.appendChild(movieElement);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            displayMovies(movies);
+
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+            searchButton.addEventListener('click', function () {
+                const query = searchInput.value.toLowerCase();
+                const filteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(query));
+                displayMovies(filteredMovies);
+            });
+        });
+
+        function filterMovies(category) {
+            const filteredMovies = movies.filter(movie => movie.categories.includes(category));
+            displayMovies(filteredMovies);
+        }
+
+        function goToHomePage() {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

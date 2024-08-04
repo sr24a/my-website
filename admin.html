@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الإدارة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+            text-align: center;
+            background-color: #222;
+            color: #fff;
+        }
+        h1 {
+            color: #ff2d55;
+            margin: 20px 0;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #ff2d55;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff595f;
+        }
+        #logout-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 5px 10px;
+            background-color: #ff2d55;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #logout-button:hover {
+            background-color: #ff595f;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="logout-button" onclick="logout()">تسجيل الخروج</button>
+    
+    <h1>إدارة المستخدمين</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>اسم المستخدم</th>
+                <th>كلمة المرور</th>
+                <th>إجراء</th>
+            </tr>
+        </thead>
+        <tbody id="user-table-body">
+            <!-- سيتم ملء المستخدمين هنا -->
+        </tbody>
+    </table>
+
+    <script>
+        let users = JSON.parse(localStorage.getItem('users')) || {}; // استرجاع المستخدمين من Local Storage
+
+        function renderUsers() {
+            const userTableBody = document.getElementById("user-table-body");
+            userTableBody.innerHTML = ''; // مسح الجدول الحالي
+
+            for (const username in users) {
+                const row = document.createElement("tr");
+                const usernameCell = document.createElement("td");
+                const passwordCell = document.createElement("td");
+                const actionCell = document.createElement("td");
+
+                usernameCell.textContent = username;
+                passwordCell.textContent = users[username]; // عرض كلمة المرور (يفضل عدم عرضها لأسباب أمنية)
+
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "حذف";
+                deleteButton.onclick = () => deleteUser(username);
+
+                actionCell.appendChild(deleteButton);
+                row.appendChild(usernameCell);
+                row.appendChild(passwordCell);
+                row.appendChild(actionCell);
+                userTableBody.appendChild(row);
+            }
+        }
+
+        function deleteUser(username) {
+            if (confirm("هل أنت متأكد أنك تريد حذف هذا المستخدم؟")) {
+                delete users[username];
+                localStorage.setItem('users', JSON.stringify(users)); // حفظ التغييرات في Local Storage
+                renderUsers(); // إعادة رسم الجدول
+            }
+        }
+
+        function logout() {
+            // إعادة توجيه المستخدم إلى صفحة تسجيل الدخول أو الصفحة الرئيسية
+            window.location.href = "index.html"; // استبدل "index.html" بصفحتك الخاصة
+        }
+
+        window.onload = function() {
+            renderUsers(); // عرض المستخدمين عند تحميل الصفحة
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل حساب جديد</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+            text-align: center;
+            background-color: #222; /* لون داكن للخلفية */
+            color: #fff; /* لون أبيض للنص */
+        }
+        #register-section {
+            background-color: rgba(0, 0, 0, 0.8); /* لون داكن شفاف */
+            border-radius: 10px;
+            padding: 20px;
+            width: 400px;
+            margin: 100px auto;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6); /* ظل للتباين */
+        }
+        h1 {
+            color: #ff2d55; /* لون أحمر لفت الانتباه */
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        input[type="text"],
+        input[type="password"],
+        button {
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            width: 80%;
+            font-size: 16px;
+            display: block;
+            margin: 10px auto;
+            background-color: #ff2d55; /* لون أحمر لزر التسجيل */
+            color: #fff; /* لون أبيض للنص */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="text"],
+        input[type="password"] {
+            background-color: rgba(255, 255, 255, 0.9); /* لون أبيض شفاف */
+            color: #222; /* لون داكن للنص */
+            padding-left: 10px; /* توسيط النص في حقول الإدخال */
+        }
+        button:hover {
+            background-color: #ff595f; /* لون أحمر فاتح عند التحويل */
+        }
+    </style>
+</head>
+<body>
+    <div id="register-section">
+        <h1>تسجيل حساب جديد</h1>
+        <input type="text" id="new-username" placeholder="اسم المستخدم" required>
+        <input type="password" id="new-password" placeholder="كلمة المرور" required>
+        <button id="register-button" onclick="register()">تسجيل</button>
+    </div>
+
+    <script>
+        const users = JSON.parse(localStorage.getItem("users")) || {}; // استرجاع المستخدمين من التخزين المحلي
+
+        function register() {
+            const username = document.getElementById("new-username").value;
+            const password = document.getElementById("new-password").value;
+
+            if (users.hasOwnProperty(username)) {
+                alert("اسم المستخدم موجود بالفعل، يرجى اختيار اسم مستخدم آخر.");
+            } else {
+                users[username] = password; // إضافة المستخدم الجديد
+                localStorage.setItem("users", JSON.stringify(users)); // تخزين المستخدمين في التخزين المحلي
+                alert("تم إنشاء حسابك بنجاح!");
+                window.location.href = "index.html"; // إعادة توجيه إلى صفحة تسجيل الدخول بعد النجاح
+            }
+        }
+    </script>
+</body>
+</html>
