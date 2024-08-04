@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ساعة الأفلام</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+            text-align: center;
+            background-color: #222; /* لون داكن للخلفية */
+            color: #fff; /* لون أبيض للنص */
+        }
+        #welcome-section {
+            background-color: rgba(0, 0, 0, 0.8); /* لون داكن شفاف */
+            border-radius: 10px;
+            padding: 20px;
+            width: 400px;
+            margin: 100px auto;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6); /* ظل للتباين */
+        }
+        h1 {
+            color: #ff2d55; /* لون أحمر لفت الانتباه */
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        input[type="text"],
+        input[type="password"],
+        button {
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            width: 80%;
+            font-size: 16px;
+            display: block;
+            margin: 10px auto;
+            background-color: #ff2d55; /* لون أحمر لزر التسجيل */
+            color: #fff; /* لون أبيض للنص */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="text"],
+        input[type="password"] {
+            background-color: rgba(255, 255, 255, 0.9); /* لون أبيض شفاف */
+            color: #222; /* لون داكن للنص */
+            padding-left: 10px; /* توسيط النص في حقول الإدخال */
+        }
+        button:hover {
+            background-color: #ff595f; /* لون أحمر فاتح عند التحويل */
+        }
+        /* شريط تبديل اللغة */
+        #language-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            padding: 5px;
+            background-color: #333; /* لون خلفية شريط التبديل */
+            border-radius: 30px; /* زاوية التدوير */
+            width: 220px; /* عرض شريط التبديل */
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* تأثير التحول */
+        }
+        .lang-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border-radius: 30px; /* زاوية التدوير للخيارات */
+            color: #fff; /* لون النص */
+            background-color: #555; /* لون خلفية الخيار غير المحدد */
+            transition: background-color 0.3s ease; /* تأثير التحول */
+        }
+        .lang-option.selected {
+            background-color: #ff2d55; /* لون خلفية الخيار المختار */
+        }
+        #home-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 5px 10px;
+            font-size: 14px;
+            background-color: #222;
+            border-radius: 3px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #home-button:hover {
+            background-color: #111;
+        }
+        /* زر الانتقال إلى صفحة الإدارة */
+        #admin-button {
+            background-color: #ff2d55; /* لون أحمر لزر الإدارة */
+            margin-top: 20px;
+        }
+        /* زر تسجيل حساب جديد */
+        #register-button {
+            background-color: #007bff; /* لون أزرق لزر التسجيل */
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط تبديل اللغة -->
+    <div id="language-toggle">
+        <div id="arabic-option" class="lang-option selected" onclick="setLanguage('ar')">العربية</div>
+        <div id="english-option" class="lang-option" onclick="setLanguage('en')">English</div>
+    </div>
+
+    <div id="welcome-section">
+        <h1 id="welcome-title"></h1>
+        <p id="welcome-text"></p>
+        <input type="text" id="username" placeholder="">
+        <input type="password" id="password" placeholder="">
+        <button id="login-button" onclick="login()"></button>
+        <button id="admin-button" onclick="goToAdminPage()">انتقال إلى صفحة الإدارة</button>
+        <button id="register-button" onclick="goToRegisterPage()">تسجيل حساب جديد</button>
+    </div>
+    <button id="home-button" onclick="goToHomePage()"> </button>
+
+    <script>
+        // استرجاع المستخدمين من التخزين المحلي
+        const users = JSON.parse(localStorage.getItem("users")) || {}; 
+        
+        const translations = {
+            ar: {
+                welcomeTitle: "ساعة الراحة",
+                welcomeText: "استمتع بأفضل تجربة لمشاهدة الأفلام والروايات عبر الإنترنت",
+                usernamePlaceholder: "اسم المستخدم",
+                passwordPlaceholder: "كلمة المرور",
+                loginButton: "تسجيل الدخول",
+                adminButton: "انتقال إلى صفحة الإدارة",
+                registerButton: "تسجيل حساب جديد",
+                loginError: "اسم المستخدم أو كلمة المرور غير صحيحة، يرجى المحاولة مرة أخرى."
+            },
+            en: {
+                welcomeTitle: "Relaxation Hour",
+                welcomeText: "Enjoy the best experience for watching movies and novels online",
+                usernamePlaceholder: "Username",
+                passwordPlaceholder: "Password",
+                loginButton: "Login",
+                adminButton: "Go to Admin Page",
+                registerButton: "Register New Account",
+                loginError: "Incorrect username or password, please try again."
+            }
+        };
+
+        function setLanguage(language) {
+            document.getElementById("welcome-title").textContent = translations[language].welcomeTitle;
+            document.getElementById("welcome-text").textContent = translations[language].welcomeText;
+            document.getElementById("username").placeholder = translations[language].usernamePlaceholder;
+            document.getElementById("password").placeholder = translations[language].passwordPlaceholder;
+            document.getElementById("login-button").textContent = translations[language].loginButton;
+            document.getElementById("admin-button").textContent = translations[language].adminButton; // تغيير نص الزر
+            document.getElementById("register-button").textContent = translations[language].registerButton; // تغيير نص الزر
+            document.documentElement.lang = language; // تحديث لغة الوثيقة
+
+            // تحديث حالة اختيار اللغة
+            document.getElementById("arabic-option").classList.toggle("selected", language === 'ar');
+            document.getElementById("english-option").classList.toggle("selected", language === 'en');
+        }
+
+        function login() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            // التحقق من وجود المستخدم وكلمة المرور في التخزين المحلي
+            if (users.hasOwnProperty(username) && users[username] === password) {
+                window.location.href = "go.html"; // إعادة توجيه إلى الصفحة الرئيسية بعد تسجيل الدخول الناجح
+            } else {
+                alert(translations[document.documentElement.lang].loginError);
+            }
+        }
+
+        function goToAdminPage() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // التحقق من اسم المستخدم وكلمة المرور قبل الانتقال إلى صفحة الإدارة
+            if (username === "A" && password === "1122") {
+                window.location.href = "admin.html"; // استبدل "admin.html" بصفحة الإدارة الخاصة بك
+            } else {
+                alert("يجب عليك تسجيل الدخول كمدير للوصول إلى صفحة الإدارة.");
+            }
+        }
+
+        function goToRegisterPage() {
+            window.location.href = "register.html"; // استبدل "register.html" بصفحة التسجيل الخاصة بك
+        }
+
+        // تعيين اللغة الافتراضية عند تحميل الصفحة
+        setLanguage('ar');
+    </script>
+</body>
+</html>
