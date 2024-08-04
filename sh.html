@@ -53,6 +53,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
         }
         #search-input {
             width: 300px;
@@ -75,9 +76,11 @@
             display: flex;
             justify-content: center;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
         #filters-container {
-            width: 200px;
+            width: 100%;
+            max-width: 200px;
             margin-right: 20px;
             text-align: left;
         }
@@ -106,7 +109,8 @@
             width: calc(100% - 240px);
         }
         .book {
-            width: 300px;
+            width: 100%;
+            max-width: 300px;
             margin: 20px;
             padding: 20px;
             background-color: #fff;
@@ -152,6 +156,23 @@
         .home-button:hover {
             background-color: #003208;
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #books-container {
+                width: 100%;
+            }
+            #filters-container {
+                width: 100%;
+                max-width: 100%;
+                margin-right: 0;
+                text-align: center;
+            }
+            .book {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -160,7 +181,6 @@
     </header>
     <nav>
         <ul>
-            
             <li><a href="روايات.html">روايات</a></li>
             <li><a href="index.html">الرئيسية</a></li>
             <li><a href="الافلام.html">أفلام</a></li>
@@ -191,21 +211,21 @@
     <script>
         const books = [
             {
-                title: " هاري بوتر وحجر الفيلسوف 2001  ",
+                title: "هاري بوتر وحجر الفيلسوف 2001",
                 image: "harrypotter1.jpeg",
                 pdf: "هاري بوتر1.pdf",
                 description: "رواية تجمع بين الخيال والإثارة.",
                 categories: ["خيال"]
             },
             {
-                title: "هاري بوتر وحجرة الأسرار  2002" ,
+                title: "هاري بوتر وحجرة الأسرار 2002",
                 image: "harry2.jpeg",
                 pdf: "هاري بوتر2.pdf",
                 description: "رواية تجمع بين الخيال والإثارة.",
                 categories: ["خيال"]
             },
             {
-                title: " هاري بوتر وسجين أزكابان 2004",
+                title: "هاري بوتر وسجين أزكابان 2004",
                 image: "h3.jpg",
                 pdf: "هاري بوتر3.pdf",
                 description: "رواية تجمع بين الخيال والإثارة.",
@@ -219,14 +239,14 @@
                 categories: ["خيال"]
             },
             {
-                title: " هاري بوتر وجماعة العنقاء 2007",
+                title: "هاري بوتر وجماعة العنقاء 2007",
                 image: "h5.jpg",
                 pdf: "هاري بوتر5.pdf",
                 description: "رواية تجمع بين الخيال والإثارة.",
                 categories: ["خيال"]
             },
             {
-                title: " هاري بوتر ومقدسات الموت 2010",
+                title: "هاري بوتر ومقدسات الموت 2010",
                 image: "h6.jpg",
                 pdf: "هاري بوتر6.pdf",
                 description: "رواية تجمع بين الخيال والإثارة.",
