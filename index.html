@@ -18,7 +18,8 @@
             background-color: rgba(0, 0, 0, 0.8); /* لون داكن شفاف */
             border-radius: 10px;
             padding: 20px;
-            width: 400px;
+            width: 90%;
+            max-width: 400px;
             margin: 100px auto;
             box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6); /* ظل للتباين */
         }
@@ -65,7 +66,8 @@
             padding: 5px;
             background-color: #333; /* لون خلفية شريط التبديل */
             border-radius: 30px; /* زاوية التدوير */
-            width: 220px; /* عرض شريط التبديل */
+            width: 90%;
+            max-width: 220px;
             cursor: pointer;
             transition: background-color 0.3s ease; /* تأثير التحول */
         }
@@ -105,6 +107,21 @@
         #register-button {
             background-color: #007bff; /* لون أزرق لزر التسجيل */
             margin-top: 10px;
+        }
+
+        /* Media Queries لتصميم متجاوب */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 24px;
+            }
+            p {
+                font-size: 16px;
+            }
+            input[type="text"],
+            input[type="password"],
+            button {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
